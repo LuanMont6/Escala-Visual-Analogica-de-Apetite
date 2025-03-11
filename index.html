@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escala de Fome</title>
+
+  <!-- Novo SDK do EmailJS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <style>
+    body {
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+    background: #65796c; /* Cor suave de verde */
+    }
+    
+    .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+    font-size: 18px;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+    }
+
+    input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    }
+
+    input:focus, select:focus {
+    border-color: #00ff88;
+    outline: none;
+    }
+
+    button {
+    background-color: #000000;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00ff88;
+    }
+
+    #resposta {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: #d4edda;
+      color: #155724;
+      border-left: 5px solid #28a745;
+    }
+
+    #resposta h2 {
+    font-size: 24px;
+    }
+
+    /* Contêiner da barra de slider */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    /* Barra de progressão da barra de slider */
+    .slider-container input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    }
+
+    .slider-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00ff88;
+    cursor: pointer;
+    }
+
+    .slider-container input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00ff88;
+    cursor: pointer;
+    }
+
+    /* Alinhamento das etiquetas dos sliders */
+    .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333;
+    }
+
+    /* Alinhamento do valor selecionado */
+    .slider-value {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="formContainer">
+    <h1 class="text-center">Escala Visual Analógica de Apetite</h1>
+
+    <form id="fomeForm">
+      <div class="form-group">
+        <label for="nome">Qual é o seu nome?</label>
+        <input type="text" id="nome" placeholder="Digite seu nome" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fome">Quanto você está sentindo fome neste momento? (0.0 - 100.0)</label>
+        <div class="slider-container">
+          <input type="range" id="fome" min="0" max="100" step="0.1" value="50" required>
+          <div class="slider-labels">
+            <span>Nada</span>
+            <span>Muito</span>
+          </div>
+        </div>
+        <div class="slider-value" id="sliderValueFome">Valor selecionado: 50.0</div>
+      </div>
+
+      <div class="form-group">
+        <label for="cheio">O quão cheio você se sente agora? (0.0 - 100.0)</label>
+        <div class="slider-container">
+          <input type="range" id="cheio" min="0" max="100" step="0.1" value="50" required>
+          <div class="slider-labels">
+            <span>Nada</span>
+            <span>Muito</span>
+          </div>
+        </div>
+        <div class="slider-value" id="sliderValueCheio">Valor selecionado: 50.0</div>
+      </div>
+
+      <div class="form-group">
+        <label for="desejoComer">O quanto você deseja comer agora? (0.0 - 100.0)</label>
+        <div class="slider-container">
+          <input type="range" id="desejoComer" min="0" max="100" step="0.1" value="50" required>
+          <div class="slider-labels">
+            <span>Nada</span>
+            <span>Muito</span>
+          </div>
+        </div>
+        <div class="slider-value" id="sliderValueDesejoComer">Valor selecionado: 50.0</div>
+      </div>
+
+      <div class="form-group">
+        <label for="consegueComer">O quanto você acha que consegue comer agora? (0.0 - 100.0)</label>
+        <div class="slider-container">
+          <input type="range" id="consegueComer" min="0" max="100" step="0.1" value="50" required>
+          <div class="slider-labels">
+            <span>Nada</span>
+            <span>Muito</span>
+          </div>
+        </div>
+        <div class="slider-value" id="sliderValueConsegueComer">Valor selecionado: 50.0</div>
+      </div>
+
+      <div class="form-group">
+        <label for="ultimaRefeicao">Quando foi sua última refeição?</label>
+        <select id="ultimaRefeicao" required>
+          <option value="Jejum de 12 horas">Jejum de 12 horas</option>
+          <option value="15 minutos">15 minutos</option>
+          <option value="30 minutos">30 minutos</option>
+          <option value="45 minutos">45 minutos</option>
+          <option value="60 minutos">60 minutos</option>
+          <option value="75 minutos">75 minutos</option>
+          <option value="90 minutos">90 minutos</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tipoRefeicao">Qual foi sua última refeição?</label>
+        <select id="tipoRefeicao" required>
+          <option value="Café da manhã">Café da manhã</option>
+          <option value="Almoço">Almoço</option>
+          <option value="Jantar">Jantar</option>
+        </select>
+      </div>
+
+      <button type="submit">Enviar Resposta</button>
+    </form>
+  </div>
+
+  <div id="resposta">
+    <h2>Resposta Enviada com Sucesso! ✅</h2>
+    <p><strong>Nome:</strong> <span id="nomeResposta"></span></p>
+    <p><strong>Quanto você está sentindo fome neste momento?</strong> <span id="fomeResposta"></span></p>
+    <p><strong>O quão cheio você se sente agora?</strong> <span id="cheioResposta"></span></p>
+    <p><strong>O quanto você deseja comer agora?</strong> <span id="desejoComerResposta"></span></p>
+    <p><strong>Quanto você acha que consegue comer agora?</strong> <span id="consegueComerResposta"></span></p>
+    <p><strong>Quando foi sua última refeição?</strong> <span id="ultimaRefeicaoResposta"></span></p>
+    <p><strong>Qual foi sua última refeição?</strong> <span id="tipoRefeicaoResposta"></span></p>
+    <button onclick="recarregarPagina()">Responder Novamente</button>
+  </div>
+
+
+  <script>
+    // Inicializando o EmailJS
+    (function() {
+      emailjs.init("bEj9UPIe37BWagXVZ"); // Substitua pelo seu Public Key
+    })();
+
+    // Atualiza o valor exibido ao lado dos sliders
+    document.getElementById('fome').addEventListener('input', function() {
+      document.getElementById('sliderValueFome').textContent = `Valor selecionado: ${this.value}`;
+    });
+
+    document.getElementById('cheio').addEventListener('input', function() {
+      document.getElementById('sliderValueCheio').textContent = `Valor selecionado: ${this.value}`;
+    });
+
+    document.getElementById('desejoComer').addEventListener('input', function() {
+      document.getElementById('sliderValueDesejoComer').textContent = `Valor selecionado: ${this.value}`;
+    });
+
+    document.getElementById('consegueComer').addEventListener('input', function() {
+      document.getElementById('sliderValueConsegueComer').textContent = `Valor selecionado: ${this.value}`;
+    });
+
+    // Função para enviar respostas
+    document.getElementById('fomeForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Impede o envio do formulário para evitar que a página recarregue
+
+      const nome = document.getElementById('nome').value;
+      const fome = document.getElementById('fome').value;
+      const cheio = document.getElementById('cheio').value;
+      const desejoComer = document.getElementById('desejoComer').value;
+      const consegueComer = document.getElementById('consegueComer').value;
+      const ultimaRefeicao = document.getElementById('ultimaRefeicao').value;
+      const tipoRefeicao = document.getElementById('tipoRefeicao').value;
+
+      // Verifica se o campo nome foi preenchido
+      if (nome.trim() === "") {
+        alert("Por favor, preencha seu nome antes de enviar.");
+        return;
+      }
+
+      // Exibe as respostas após envio
+      document.getElementById('nomeResposta').textContent = nome;
+      document.getElementById('fomeResposta').textContent = fome;
+      document.getElementById('cheioResposta').textContent = cheio;
+      document.getElementById('desejoComerResposta').textContent = desejoComer;
+      document.getElementById('consegueComerResposta').textContent = consegueComer;
+      document.getElementById('ultimaRefeicaoResposta').textContent = ultimaRefeicao;
+      document.getElementById('tipoRefeicaoResposta').textContent = tipoRefeicao;
+
+
+      // Esconde o formulário e mostra a resposta
+      document.getElementById('formContainer').style.display = 'none';
+      document.getElementById('resposta').style.display = 'block';
+
+      // Envia os dados via EmailJS
+      const templateParams = {
+        nome: nome,
+        fome: fome,
+        cheio: cheio,
+        desejo: desejoComer,
+        capacidade: consegueComer,
+        hora: ultimaRefeicao,
+        ultima: tipoRefeicao
+      };
+
+      emailjs.send('service_fiat7pe', 'template_xn5hyr9', templateParams)
+        .then(function(response) {
+          console.log('Sucesso!', response);
+        }, function(error) {
+          console.log('Erro:', error);
+        });
+    });
+
+    // Função para recarregar a página
+    function recarregarPagina() {
+      location.reload();
+    }
+  </script>
+
+</body>
+</html>
