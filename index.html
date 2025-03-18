@@ -6,31 +6,30 @@
   <title>Escala de Fome</title>
   <link rel="icon" type="image/png" href="nutricao.png">
 
-
   <!-- Novo SDK do EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
   <style>
     body {
-    font-family: 'Roboto', sans-serif;
-    padding: 20px;
-    background: linear-gradient(135deg, #e0f7da, #a8e6cf, #81c784);
+      font-family: 'Roboto', sans-serif;
+      padding: 20px;
+      background: linear-gradient(135deg, #e0f7da, #a8e6cf, #81c784);
     }
-    
+
     .container {
-    max-width: 600px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
     h1 {
-    font-size: 28px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
     }
 
     .form-group {
@@ -38,37 +37,37 @@
     }
 
     label {
-    font-size: 18px;
-    margin-bottom: 5px;
-    display: block;
-    color: #333;
+      font-size: 18px;
+      margin-bottom: 5px;
+      display: block;
+      color: #333;
     }
 
     input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    font-size: 16px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 16px;
     }
 
     input:focus, select:focus {
-    border-color: #00ff88;
-    outline: none;
+      border-color: #00ff88;
+      outline: none;
     }
 
     button {
-    background-color: #000000;
-    color: white;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 20px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+      background-color: #000000;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -85,10 +84,9 @@
     }
 
     #resposta h2 {
-    font-size: 24px;
+      font-size: 24px;
     }
 
-    /* Contêiner da barra de slider */
     .slider-container {
       position: relative;
       width: 100%;
@@ -97,48 +95,45 @@
       align-items: stretch;
     }
 
-    /* Barra de progressão da barra de slider */
     .slider-container input[type="range"] {
-    width: 100%;
-    margin: 10px 0;
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    border-radius: 5px;
-    background: #ddd;
+      width: 100%;
+      margin: 10px 0;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      border-radius: 5px;
+      background: #ddd;
     }
 
     .slider-container input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #00ff88;
-    cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #00ff88;
+      cursor: pointer;
     }
 
     .slider-container input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #00ff88;
-    cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #00ff88;
+      cursor: pointer;
     }
 
-    /* Alinhamento das etiquetas dos sliders */
     .slider-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #333;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #333;
     }
 
-    /* Alinhamento do valor selecionado */
     .slider-value {
-    text-align: center;
-    font-size: 18px;
-    color: #333;
+      text-align: center;
+      font-size: 18px;
+      color: #333;
     }
   </style>
 </head>
@@ -219,6 +214,29 @@
         </select>
       </div>
 
+      <!-- Perguntas novas -->
+      <div class="form-group" id="prazerosaContainer" style="display: none;">
+        <label for="prazerosa">Quão prazerosa é essa refeição?</label>
+        <div class="slider-container">
+          <input type="range" id="prazerosa" min="0" max="100" step="0.1" value="50">
+          <div class="slider-labels">
+            <span>Nada/Nenhuma</span>
+            <span>Excessiva</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" id="familiarContainer" style="display: none;">
+        <label for="familiar">Quão familiar é essa refeição?</label>
+        <div class="slider-container">
+          <input type="range" id="familiar" min="0" max="100" step="0.1" value="50">
+          <div class="slider-labels">
+            <span>Nada/Nenhuma</span>
+            <span>Excessiva(o)</span>
+          </div>
+        </div>
+      </div>
+
       <button type="submit">Enviar Resposta</button>
     </form>
   </div>
@@ -232,36 +250,31 @@
     <p><strong>Quanto você acha que consegue comer agora?</strong> <span id="consegueComerResposta"></span></p>
     <p><strong>Quando foi sua última refeição?</strong> <span id="ultimaRefeicaoResposta"></span></p>
     <p><strong>Qual foi sua última refeição?</strong> <span id="tipoRefeicaoResposta"></span></p>
+    <!-- Respostas novas -->
+    <p><strong>Quão prazerosa foi sua refeição?</strong> <span id="prazerosaResposta"></span></p>
+    <p><strong>Quão familiar foi sua refeição?</strong> <span id="familiarResposta"></span></p>
     <button onclick="recarregarPagina()">Responder Novamente</button>
   </div>
 
-
   <script>
-    // Inicializando o EmailJS
     (function() {
-      emailjs.init("bEj9UPIe37BWagXVZ"); // Substitua pelo seu Public Key
+      emailjs.init("bEj9UPIe37BWagXVZ");
     })();
 
-    // Atualiza o valor exibido ao lado dos sliders
-    document.getElementById('fome').addEventListener('input', function() {
-      document.getElementById('sliderValueFome').textContent = `Valor selecionado: ${this.value}`;
+    document.getElementById('ultimaRefeicao').addEventListener('change', function() {
+      const ultimaRefeicao = this.value;
+
+      if (ultimaRefeicao === '15 minutos') {
+        document.getElementById('prazerosaContainer').style.display = 'block';
+        document.getElementById('familiarContainer').style.display = 'block';
+      } else {
+        document.getElementById('prazerosaContainer').style.display = 'none';
+        document.getElementById('familiarContainer').style.display = 'none';
+      }
     });
 
-    document.getElementById('cheio').addEventListener('input', function() {
-      document.getElementById('sliderValueCheio').textContent = `Valor selecionado: ${this.value}`;
-    });
-
-    document.getElementById('desejoComer').addEventListener('input', function() {
-      document.getElementById('sliderValueDesejoComer').textContent = `Valor selecionado: ${this.value}`;
-    });
-
-    document.getElementById('consegueComer').addEventListener('input', function() {
-      document.getElementById('sliderValueConsegueComer').textContent = `Valor selecionado: ${this.value}`;
-    });
-
-    // Função para enviar respostas
     document.getElementById('fomeForm').addEventListener('submit', function(event) {
-      event.preventDefault(); // Impede o envio do formulário para evitar que a página recarregue
+      event.preventDefault();
 
       const nome = document.getElementById('nome').value;
       const fome = document.getElementById('fome').value;
@@ -271,13 +284,10 @@
       const ultimaRefeicao = document.getElementById('ultimaRefeicao').value;
       const tipoRefeicao = document.getElementById('tipoRefeicao').value;
 
-      // Verifica se o campo nome foi preenchido
-      if (nome.trim() === "") {
-        alert("Por favor, preencha seu nome antes de enviar.");
-        return;
-      }
+      // Novas perguntas
+      const prazerosa = document.getElementById('prazerosa').value;
+      const familiar = document.getElementById('familiar').value;
 
-      // Exibe as respostas após envio
       document.getElementById('nomeResposta').textContent = nome;
       document.getElementById('fomeResposta').textContent = fome;
       document.getElementById('cheioResposta').textContent = cheio;
@@ -286,12 +296,14 @@
       document.getElementById('ultimaRefeicaoResposta').textContent = ultimaRefeicao;
       document.getElementById('tipoRefeicaoResposta').textContent = tipoRefeicao;
 
+      if (ultimaRefeicao === '15 minutos') {
+        document.getElementById('prazerosaResposta').textContent = prazerosa;
+        document.getElementById('familiarResposta').textContent = familiar;
+      }
 
-      // Esconde o formulário e mostra a resposta
       document.getElementById('formContainer').style.display = 'none';
       document.getElementById('resposta').style.display = 'block';
 
-      // Envia os dados via EmailJS
       const templateParams = {
         nome: nome,
         fome: fome,
@@ -299,7 +311,9 @@
         desejo: desejoComer,
         capacidade: consegueComer,
         hora: ultimaRefeicao,
-        ultima: tipoRefeicao
+        ultima: tipoRefeicao,
+        prazerosa: ultimaRefeicao === '15 minutos' ? prazerosa : null,
+        familiar: ultimaRefeicao === '15 minutos' ? familiar : null
       };
 
       emailjs.send('service_fiat7pe', 'template_xn5hyr9', templateParams)
@@ -310,11 +324,9 @@
         });
     });
 
-    // Função para recarregar a página
     function recarregarPagina() {
-      location.reload();
+      window.location.reload();
     }
   </script>
-
 </body>
 </html>
