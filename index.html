@@ -196,6 +196,8 @@
         <label for="ultimaRefeicao">Quando foi sua última refeição?</label>
         <select id="ultimaRefeicao" required>
           <option value="Jejum de 12 horas">Jejum de 12 horas</option>
+          <option value="Pré-almoço">Pré-almoço</option>
+          <option value="Pré-jantar">Pré-jantar</option>
           <option value="15 minutos">15 minutos</option>
           <option value="30 minutos">30 minutos</option>
           <option value="45 minutos">45 minutos</option>
@@ -244,15 +246,15 @@
   <div id="resposta">
     <h2>Resposta Enviada com Sucesso! ✅</h2>
     <p><strong>Nome:</strong> <span id="nomeResposta"></span></p>
-    <p><strong>Quanto você está sentindo fome neste momento?</strong> <span id="fomeResposta"></span></p>
-    <p><strong>O quão cheio você se sente agora?</strong> <span id="cheioResposta"></span></p>
-    <p><strong>O quanto você deseja comer agora?</strong> <span id="desejoComerResposta"></span></p>
-    <p><strong>Quanto você acha que consegue comer agora?</strong> <span id="consegueComerResposta"></span></p>
-    <p><strong>Quando foi sua última refeição?</strong> <span id="ultimaRefeicaoResposta"></span></p>
-    <p><strong>Qual foi sua última refeição?</strong> <span id="tipoRefeicaoResposta"></span></p>
+    <p><strong>Quanto você está sentindo fome neste momento?</strong> <span id="fomeResposta">Respondido</span></p>
+    <p><strong>O quão cheio você se sente agora?</strong> <span id="cheioResposta">Respondido</span></p>
+    <p><strong>O quanto você deseja comer agora?</strong> <span id="desejoComerResposta">Respondido</span></p>
+    <p><strong>Quanto você acha que consegue comer agora?</strong> <span id="consegueComerResposta">Respondido</span></p>
+    <p><strong>Quando foi sua última refeição?</strong> <span id="ultimaRefeicaoResposta">Respondido</span></p>
+    <p><strong>Qual foi sua última refeição?</strong> <span id="tipoRefeicaoResposta">Respondido</span></p>
     <!-- Respostas novas -->
-    <p><strong>Quão prazerosa foi sua refeição?</strong> <span id="prazerosaResposta"></span></p>
-    <p><strong>Quão familiar foi sua refeição?</strong> <span id="familiarResposta"></span></p>
+    <p><strong>Quão prazerosa foi sua refeição?</strong> <span id="prazerosaResposta">Respondido</span></p>
+    <p><strong>Quão familiar foi sua refeição?</strong> <span id="familiarResposta">Respondido</span></p>
     <button onclick="recarregarPagina()">Responder Novamente</button>
   </div>
 
@@ -263,66 +265,95 @@
 
     document.getElementById('ultimaRefeicao').addEventListener('change', function() {
       const ultimaRefeicao = this.value;
+      const prazerosaContainer = document.getElementById('prazerosaContainer');
+      const familiarContainer = document.getElementById('familiarContainer');
 
       if (ultimaRefeicao === '15 minutos') {
-        document.getElementById('prazerosaContainer').style.display = 'block';
-        document.getElementById('familiarContainer').style.display = 'block';
+        prazerosaContainer.style.display = 'block';
+        familiarContainer.style.display = 'block';
       } else {
-        document.getElementById('prazerosaContainer').style.display = 'none';
-        document.getElementById('familiarContainer').style.display = 'none';
+        prazerosaContainer.style.display = 'none';
+        familiarContainer.style.display = 'none';
       }
     });
 
     document.getElementById('fomeForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+  event.preventDefault();
 
-      const nome = document.getElementById('nome').value;
-      const fome = document.getElementById('fome').value;
-      const cheio = document.getElementById('cheio').value;
-      const desejoComer = document.getElementById('desejoComer').value;
-      const consegueComer = document.getElementById('consegueComer').value;
-      const ultimaRefeicao = document.getElementById('ultimaRefeicao').value;
-      const tipoRefeicao = document.getElementById('tipoRefeicao').value;
+  const nome = document.getElementById('nome').value.trim();
+  const fome = document.getElementById('fome').value;
+  const cheio = document.getElementById('cheio').value;
+  const desejoComer = document.getElementById('desejoComer').value;
+  const consegueComer = document.getElementById('consegueComer').value;
+  const ultimaRefeicao = document.getElementById('ultimaRefeicao').value;
+  const tipoRefeicao = document.getElementById('tipoRefeicao').value;
+  const prazerosa = ultimaRefeicao === '15 minutos' ? document.getElementById('prazerosa').value : "Não informado";
+  const familiar = ultimaRefeicao === '15 minutos' ? document.getElementById('familiar').value : "Não informado";
 
-      // Novas perguntas
-      const prazerosa = document.getElementById('prazerosa').value;
-      const familiar = document.getElementById('familiar').value;
+  if (!nome) {
+    alert("Por favor, insira seu nome antes de enviar.");
+    return;
+  }
 
-      document.getElementById('nomeResposta').textContent = nome;
-      document.getElementById('fomeResposta').textContent = fome;
-      document.getElementById('cheioResposta').textContent = cheio;
-      document.getElementById('desejoComerResposta').textContent = desejoComer;
-      document.getElementById('consegueComerResposta').textContent = consegueComer;
-      document.getElementById('ultimaRefeicaoResposta').textContent = ultimaRefeicao;
-      document.getElementById('tipoRefeicaoResposta').textContent = tipoRefeicao;
+  updateResponseView(nome, fome, cheio, desejoComer, consegueComer, ultimaRefeicao, tipoRefeicao, prazerosa, familiar);
+  sendEmail(nome, fome, cheio, desejoComer, consegueComer, ultimaRefeicao, tipoRefeicao, prazerosa, familiar);
 
-      if (ultimaRefeicao === '15 minutos') {
-        document.getElementById('prazerosaResposta').textContent = prazerosa;
-        document.getElementById('familiarResposta').textContent = familiar;
-      }
 
-      document.getElementById('formContainer').style.display = 'none';
-      document.getElementById('resposta').style.display = 'block';
+});
 
-      const templateParams = {
-        nome: nome,
-        fome: fome,
-        cheio: cheio,
-        desejo: desejoComer,
-        capacidade: consegueComer,
-        hora: ultimaRefeicao,
-        ultima: tipoRefeicao,
-        prazerosa: ultimaRefeicao === '15 minutos' ? prazerosa : null,
-        familiar: ultimaRefeicao === '15 minutos' ? familiar : null
-      };
 
-      emailjs.send('service_fiat7pe', 'template_xn5hyr9', templateParams)
-        .then(function(response) {
-          console.log('Sucesso!', response);
-        }, function(error) {
-          console.log('Erro:', error);
-        });
+    function updateResponseView(nome, fome, cheio, desejoComer, consegueComer, ultimaRefeicao, tipoRefeicao, prazerosa, familiar) {
+        document.getElementById('nomeResposta').textContent = nome;
+      document.getElementById('fomeResposta').textContent = "Respondido";
+      document.getElementById('cheioResposta').textContent = "Respondido";
+      document.getElementById('desejoComerResposta').textContent = "Respondido";
+      document.getElementById('consegueComerResposta').textContent = "Respondido";
+      document.getElementById('ultimaRefeicaoResposta').textContent = "Respondido";
+      document.getElementById('tipoRefeicaoResposta').textContent = "Respondido";
+
+  if (ultimaRefeicao === '15 minutos') {
+    document.getElementById('prazerosaResposta').textContent = "Respondido";
+    document.getElementById('familiarResposta').textContent = "Respondido";
+    document.getElementById('prazerosaResposta').parentElement.style.display = "block";
+    document.getElementById('familiarResposta').parentElement.style.display = "block";
+  } else {
+    document.getElementById('prazerosaResposta').parentElement.style.display = "none";
+    document.getElementById('familiarResposta').parentElement.style.display = "none";
+  }
+
+  document.getElementById('formContainer').style.display = 'none';
+  document.getElementById('resposta').style.display = 'block';
+}
+
+
+function sendEmail(nome, fome, cheio, desejoComer, consegueComer, ultimaRefeicao, tipoRefeicao, prazerosa, familiar) {
+    const templateParams = {
+    nome: nome,
+    fome: fome,
+    cheio: cheio,
+    desejo: desejoComer,
+    capacidade: consegueComer,
+    hora: ultimaRefeicao,
+    ultima: tipoRefeicao,
+    prazerosa: prazerosa !== null ? prazerosa : "Não informado",
+    familiar: familiar !== null ? familiar : "Não informado"
+};
+
+// Exibir no console antes de enviar
+console.log("Enviando email com os seguintes dados:", templateParams);
+
+emailjs.send('service_fiat7pe', 'template_xn5hyr9', templateParams)
+
+    .then(response => {
+        console.log("Sucesso!", response);
+    })
+    .catch(error => {
+        console.error("Erro ao enviar email:", error);
     });
+
+}
+
+
 
     function recarregarPagina() {
       window.location.reload();
